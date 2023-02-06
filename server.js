@@ -1,26 +1,33 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const app = express();
-
+const eventRoutes = require("./routes/event");
+const bodyParser = require("body-parser");
 require("dotenv-flow").config();
+
+app.use(bodyParser.json());
 
 // routes
 app.get("/api/welcome", (req, res) => {
-    res.status(200).send({message: "Welcome to the API"});
-})
+  res.status(200).send({ message: "Welcome to the API" });
+});
 
-mongoose.connect(
-   process.env.DBHOST, 
-   {useUnifiedTopology: true, useNewUrlParser:true}
-).catch(error => console.log("Error connecting to MongoDb: " + error));
-mongoose.connection.once('open', () => console.log('Connected succesfully to MongoDb') )
+mongoose
+  .connect(process.env.DBHOST, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
+  .catch((error) => console.log("Error connecting to MongoDb: " + error));
+mongoose.connection.once("open", () =>
+  console.log("Connected succesfully to MongoDb")
+);
+
+app.use("/api/event", eventRoutes);
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, function() {
-
-    console.log('Server is running on port: ' + PORT);
+app.listen(PORT, function () {
+  console.log("Server is running on port: " + PORT);
 });
 
 module.exports = app;
