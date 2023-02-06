@@ -18,6 +18,30 @@ router.post("/", (req, res) => {
 });
 
 // GET
+// route: /api/event/
+router.get("/", (req, res) => {
+  event
+    .find()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+});
+
+// route: /api/event/:id
+router.get("/:id", (req, res) => {
+  event
+    .findById(req.params.id)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+});
+
 // PUT
 // DELETE
 

@@ -10,4 +10,4 @@ let eventSchema = new Schema({
   address: { type: String },
 });
 
-module.export = mongoose.model("event", eventSchema);
+module.exports = mongoose.model("event", eventSchema);
