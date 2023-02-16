@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const app = express();
 const eventRoutes = require("./routes/event");
-const bodyParser = require("body-parser");
+const authRoutes = require("./routes/auth");
 require("dotenv-flow").config();
 
 app.use(bodyParser.json());
@@ -23,6 +24,7 @@ mongoose.connection.once("open", () =>
 );
 
 app.use("/api/event", eventRoutes);
+app.use("/api/user", authRoutes);
 
 const PORT = process.env.PORT || 4000;
 

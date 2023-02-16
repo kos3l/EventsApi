@@ -59,6 +59,7 @@ router.get("/:id", (req, res) => {
 // route: /api/event/:id
 router.put("/:id", (req, res) => {
   const id = req.params.id;
+
   event
     .findByIdAndUpdate(id, req.body)
     .then((data) => {
