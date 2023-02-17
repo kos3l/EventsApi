@@ -5,6 +5,7 @@ const app = express();
 const eventRoutes = require("./routes/event");
 const authRoutes = require("./routes/auth");
 require("dotenv-flow").config();
+const { verifyToken } = require("./validation");
 
 app.use(bodyParser.json());
 
@@ -23,7 +24,7 @@ mongoose.connection.once("open", () =>
   console.log("Connected succesfully to MongoDb")
 );
 
-app.use("/api/event", eventRoutes);
+app.use("/api/event", verifyToken, eventRoutes);
 app.use("/api/user", authRoutes);
 
 const PORT = process.env.PORT || 4000;
