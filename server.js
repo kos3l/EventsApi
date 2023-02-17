@@ -6,7 +6,10 @@ const eventRoutes = require("./routes/event");
 const authRoutes = require("./routes/auth");
 require("dotenv-flow").config();
 const { verifyToken } = require("./validation");
-
+const swaggerUi = require("swagger-ui-express");
+const yaml = require("yamljs");
+const swaggerDefinition = yaml.load("./swagger.yaml");
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 app.use(bodyParser.json());
 
 // routes
