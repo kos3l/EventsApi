@@ -1,18 +1,15 @@
 const event = require("../models/event");
 
 const getAllEvents = () => {
-  return event
-    .find()
-    .then((data) => {
-      return data;
-    })
-    .catch((err) => {
-      return err;
-    });
+  return event.find().then((data) => {
+    return data;
+  });
 };
 
-const getEventById = () => {
-  return;
+const getEventById = (id) => {
+  return event.findById(id).then((data) => {
+    return data;
+  });
 };
 
 const createNewEvent = () => {

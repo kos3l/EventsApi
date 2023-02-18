@@ -13,23 +13,21 @@ const createNewEvent = (req, res) => {
 };
 
 const getAllEvents = async (req, res) => {
-  const allEvents = await eventService.getAllEvents();
   try {
+    const allEvents = await eventService.getAllEvents();
     res.send(allEvents);
   } catch (error) {
-    res.status(500).send({ message: allEvents.message });
+    res.status(500).send({ message: error.message });
   }
 };
 
-const getEventById = (req, res) => {
-  event
-    .findById(req.params.id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
+const getEventById = async (req, res) => {
+  try {
+    const oneEvent = await eventService.getEventById(req.params.id);
+    res.send(oneEvent);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
 };
 
 const updateOneEvent = (req, res) => {
