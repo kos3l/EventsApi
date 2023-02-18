@@ -1,5 +1,5 @@
 const event = require("../models/event");
-
+const eventService = require("../services/eventService");
 const createNewEvent = (req, res) => {
   data = req.body;
   event
@@ -12,15 +12,13 @@ const createNewEvent = (req, res) => {
     });
 };
 
-const getAllEvents = (req, res) => {
-  event
-    .find()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
+const getAllEvents = async (req, res) => {
+  const allEvents = await eventService.getAllEvents();
+  try {
+    res.send(allEvents);
+  } catch (error) {
+    res.status(500).send({ message: allEvents.message });
+  }
 };
 
 const getEventById = (req, res) => {
