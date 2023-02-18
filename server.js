@@ -1,22 +1,30 @@
+require("dotenv-flow").config();
+
+// Import dependencies
 const express = require("express");
 const mongoose = require("mongoose");
+const yaml = require("yamljs");
 const bodyParser = require("body-parser");
-const app = express();
 const eventRoutes = require("./routes/event");
 const authRoutes = require("./routes/auth");
-require("dotenv-flow").config();
-const { verifyToken } = require("./validation");
-const swaggerUi = require("swagger-ui-express");
-const yaml = require("yamljs");
 const swaggerDefinition = yaml.load("./swagger.yaml");
+const swaggerUi = require("swagger-ui-express");
+
+// Import auth middleware
+const { verifyToken } = require("./validation");
+
+// Create express app
+const app = express();
+
+// Set up swagger
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 app.use(bodyParser.json());
 
-// routes
-app.get("/api/welcome", (req, res) => {
-  res.status(200).send({ message: "Welcome to the API" });
-});
+// Routes
+app.use("/api/event", verifyToken, eventRoutes);
+app.use("/api/user", authRoutes);
 
+// Open mongoose connection
 mongoose
   .connect(process.env.DBHOST, {
     useUnifiedTopology: true,
@@ -27,11 +35,10 @@ mongoose.connection.once("open", () =>
   console.log("Connected succesfully to MongoDb")
 );
 
-app.use("/api/event", verifyToken, eventRoutes);
-app.use("/api/user", authRoutes);
-
+// Set the port
 const PORT = process.env.PORT || 4000;
 
+// Listen to requests
 app.listen(PORT, function () {
   console.log("Server is running on port: " + PORT);
 });
