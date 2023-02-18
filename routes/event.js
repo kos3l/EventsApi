@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const event = require("../models/event");
 const eventController = require("../controllers/eventController");
 
 // POST
@@ -8,7 +7,7 @@ router.post("/", eventController.createNewEvent);
 
 // GET
 // route: /api/event/
-router.get("/", eventController.createNewEvent);
+router.get("/", eventController.getAllEvents);
 
 // route: /api/event/:id
 router.get("/:id", eventController.getEventById);
