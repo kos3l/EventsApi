@@ -1,18 +1,25 @@
 const User = require("../models/user");
 
-const register = () => {
-  return User.find().then((data) => {
-    return data;
-  });
+const register = async (user) => {
+  const newUser = await User.create(user);
+  return newUser;
 };
 
-const login = (id) => {
-  return User.findById(id).then((data) => {
+const login = async (id) => {
+  const user = await User.findById(id).then((data) => {
     return data;
   });
+
+  return user;
+};
+
+const isEmailTaken = async (email) => {
+  const foundEmail = await User.findOne({ email: email });
+  return foundEmail;
 };
 
 module.exports = {
   register,
   login,
+  isEmailTaken,
 };

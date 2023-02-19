@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const yaml = require("yamljs");
 const bodyParser = require("body-parser");
 const eventRoutes = require("./routes/eventRoutes");
-const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/authRoutes");
 const swaggerDefinition = yaml.load("./swagger.yaml");
 const swaggerUi = require("swagger-ui-express");
 
