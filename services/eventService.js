@@ -12,16 +12,22 @@ const getEventById = (id) => {
   });
 };
 
-const createNewEvent = () => {
-  return;
+const createNewEvent = (newEvent) => {
+  return event.insertMany(newEvent).then((data) => {
+    return res.send(data);
+  });
 };
 
-const updateOneEvent = () => {
-  return;
+const updateOneEvent = (id, updatedEvent) => {
+  return event.findByIdAndUpdate(id, updatedEvent).then((data) => {
+    return data;
+  });
 };
 
-const deleteOneEvent = () => {
-  return;
+const deleteOneEvent = (id) => {
+  return event.findByIdAndDelete(id).then((data) => {
+    return data;
+  });
 };
 
 module.exports = {

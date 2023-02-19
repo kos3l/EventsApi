@@ -1,15 +1,13 @@
-const event = require("../models/event");
 const eventService = require("../services/eventService");
-const createNewEvent = (req, res) => {
-  data = req.body;
-  event
-    .insertMany(data)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
+
+const createNewEvent = async (req, res) => {
+  const data = req.body;
+  try {
+    const newEvent = await eventService.createNewEvent(data);
+    res.send(newEvent);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 };
 
 const getAllEvents = async (req, res) => {
@@ -30,43 +28,38 @@ const getEventById = async (req, res) => {
   }
 };
 
-const updateOneEvent = (req, res) => {
+const updateOneEvent = async (req, res) => {
   const id = req.params.id;
 
-  event
-    .findByIdAndUpdate(id, req.body)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot update event with id=" + id + ". Event was not found",
-        });
-      } else {
-        res.send({ message: "Event was succesfully updated." });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "Error updating event with id" + id });
-    });
+  try {
+    const updatedEvent = await eventService.updateOneEvent(id, req.body);
+    if (!updatedEvent) {
+      res.status(404).send({
+        message: "Cannot update event with id=" + id + ". Event was not found",
+      });
+    } else {
+      res.send({ message: "Event was succesfully updated." });
+    }
+  } catch (err) {
+    res.status(500).send({ message: "Error updating event with id" + id });
+  }
 };
 
-const deleteOneEvent = (req, res) => {
+const deleteOneEvent = async (req, res) => {
   const id = req.params.id;
-  event
-    .findByIdAndDelete(id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot delete event with id=" + id + ". Event was not found",
-        });
-      } else {
-        res.send({ message: "Event was succesfully delete." });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "Error deleting event with id" + id });
-    });
+
+  try {
+    const deletedEvent = await eventService.deleteOneEvent(id);
+    if (!deletedEvent) {
+      res.status(404).send({
+        message: "Cannot delete event with id=" + id + ". Event was not found",
+      });
+    } else {
+      res.send({ message: "Event was succesfully delete." });
+    }
+  } catch (err) {
+    res.status(500).send({ message: "Error deleting event with id" + id });
+  }
 };
 
 module.exports = {
