@@ -1,6 +1,5 @@
-const authService = require("../services/authService");
+const authService = require("../services/auth.service");
 const User = require("../models/user");
-
 const jwt = require("jsonwebtoken");
 const {
   registerValidation,
