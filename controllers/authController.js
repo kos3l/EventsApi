@@ -1,13 +1,13 @@
-const router = require("express").Router();
+const authService = require("../services/authService");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { registerValidation, loginValidation } = require("../validation");
-// CRUD
+const {
+  registerValidation,
+  loginValidation,
+} = require("../validations/auth.validation");
 
-// POST
-// route: /api/user/register/
-router.post("/register", async (req, res) => {
+const register = async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
@@ -31,10 +31,9 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     res.status(400).json({ error });
   }
-});
+};
 
-// route: /api/user/login/
-router.post("/login", async (req, res) => {
+const login = async (req, res) => {
   const { error } = loginValidation(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
@@ -65,6 +64,9 @@ router.post("/login", async (req, res) => {
     error: null,
     data: { token },
   });
-});
+};
 
-module.exports = router;
+module.exports = {
+  register,
+  login,
+};
