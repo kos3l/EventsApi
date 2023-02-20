@@ -1,8 +1,6 @@
 const authService = require("../services/auth.service");
 const tokenService = require("../services/token.service");
 
-const { loginValidation } = require("../validations/auth.validation");
-
 const register = async (req, res) => {
   try {
     const savedUser = await authService.register(req.body);
@@ -13,22 +11,20 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { error } = loginValidation(req.body);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
+  try {
+    const loggedInUser = await authService.login(req.body);
+    const token = await tokenService.generateToken(
+      loggedInUser.name,
+      loggedInUser._id
+    );
+
+    res.header("auth-token", token).json({
+      error: null,
+      data: { token },
+    });
+  } catch (error) {
+    res.status(400).json(error);
   }
-  const user = await authService.getUserByEmail(req.body.email);
-  if (!user) {
-    return res.status(400).json({ error: "Email is wrong" });
-  }
-  const validPassword = await user.comparePassword(
-    req.body.password,
-    user.password
-  );
-  if (!validPassword) {
-    return res.status(400).json({ error: "Wrong password" });
-  }
-  await tokenService.generateToken(user.name, user._id);
 };
 
 module.exports = {

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const generateToken = async (username, id) => {
-  jwt.sign(
+  return jwt.sign(
     // payload
     {
       name: username,
@@ -12,11 +12,6 @@ const generateToken = async (username, id) => {
     // EXPIRATION TIME
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );
-
-  res.header("auth-token", token).json({
-    error: null,
-    data: { token },
-  });
 };
 
 module.exports = {

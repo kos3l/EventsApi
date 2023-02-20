@@ -16,8 +16,8 @@ const getUserById = async (id) => {
 };
 
 const getUserByEmail = async (email) => {
-  const user = await User.findOne({ email: email });
-  return user;
+  const user1 = await User.findOne({ email: email });
+  return user1;
 };
 
 module.exports = {
