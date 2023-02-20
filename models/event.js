@@ -4,16 +4,16 @@ const Schema = mongoose.Schema;
 
 let eventSchema = new Schema(
   {
-    title: { type: String, require: true },
+    title: { type: String, required: true },
     description: { type: String },
-    startDate: { type: Date, require: true },
-    endDate: { type: Date, require: true },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
     address: { type: String },
-    isArchived: { type: Boolean, require: true, default: false },
+    isArchived: { type: Boolean, required: true, default: false },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }
