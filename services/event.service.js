@@ -1,35 +1,35 @@
-const event = require("../models/event");
+const Event = require("../models/event");
 
 const getAllEvents = async () => {
-  const allEvents = await event.find().then((data) => {
+  const allEvents = await Event.find().then((data) => {
     return data;
   });
   return allEvents;
 };
 
 const getEventById = async (id) => {
-  const event = await event.findById(id).then((data) => {
+  const event = await Event.findById(id).then((data) => {
     return data;
   });
   return event;
 };
 
 const createNewEvent = async (newEvent) => {
-  const createdEvent = await event.insertMany(newEvent).then((data) => {
-    return res.send(data);
+  const createdEvent = await Event.insertMany(newEvent).then((data) => {
+    return data;
   });
   return createdEvent;
 };
 
 const updateOneEvent = async (id, updatedEvent) => {
-  const event = await event.findByIdAndUpdate(id, updatedEvent).then((data) => {
+  const event = await Event.findByIdAndUpdate(id, updatedEvent).then((data) => {
     return data;
   });
   return event;
 };
 
 const deleteOneEvent = async (id) => {
-  const deletedEvent = event.findByIdAndDelete(id).then((data) => {
+  const deletedEvent = Event.findByIdAndDelete(id).then((data) => {
     return data;
   });
   return deletedEvent;

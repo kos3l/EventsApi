@@ -33,6 +33,7 @@ const updateOneEvent = async (req, res) => {
 
   try {
     const updatedEvent = await eventService.updateOneEvent(id, req.body);
+
     if (!updatedEvent) {
       res.status(404).send({
         message: "Cannot update event with id=" + id + ". Event was not found",
@@ -41,7 +42,7 @@ const updateOneEvent = async (req, res) => {
       res.send({ message: "Event was succesfully updated." });
     }
   } catch (err) {
-    res.status(500).send({ message: "Error updating event with id" + id });
+    res.status(500).send({ message: err.message });
   }
 };
 

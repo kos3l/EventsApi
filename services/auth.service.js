@@ -1,20 +1,16 @@
-const User = require("../models/user");
+const userService = require("../services/user.service");
 
 const register = async (user) => {
-  const newUser = await User.create(user);
+  const newUser = await userService.createNewUser(user);
   return newUser;
 };
 
 const login = async (id) => {
-  const user = await User.findById(id).then((data) => {
-    return data;
-  });
-
+  const user = await userService.getUserById(id);
   return user;
 };
 
 module.exports = {
   register,
   login,
-  getUserByEmail,
 };
