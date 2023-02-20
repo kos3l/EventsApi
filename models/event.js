@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-
+// create a trigger or cron job to update is Archived
 let eventSchema = new Schema(
   {
     title: { type: String, required: true },

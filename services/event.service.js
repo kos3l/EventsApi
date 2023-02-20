@@ -32,23 +32,18 @@ const getAllEvents = async (userId, isArchived) => {
 const getAllEventsByDate = async (userId, date, datePrecision) => {
   let findArgs = null;
 
-  if (!datePrecision) {
-    findArgs = {
-      createdBy: userId,
-      startDate: {
-        $gte: dayjs(date).startOf("month").toDate(),
-        $lte: dayjs(date).endOf("month").toDate(),
-      },
-    };
-  }
-
   // test more once in typescript, what will happen if someone inputs anything else from month/week/year
   findArgs = {
     createdBy: userId,
-    startDate: {
-      $gte: dayjs(date).startOf(datePrecision).toDate(),
-      $lte: dayjs(date).endOf(datePrecision).toDate(),
-    },
+    startDate: !datePrecision
+      ? {
+          $gte: dayjs(date).startOf("month").toDate(),
+          $lte: dayjs(date).endOf("month").toDate(),
+        }
+      : {
+          $gte: dayjs(date).startOf(datePrecision).toDate(),
+          $lte: dayjs(date).endOf(datePrecision).toDate(),
+        },
   };
 
   const allEvents = await Event.find(findArgs).then((data) => {
