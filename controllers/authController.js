@@ -1,5 +1,7 @@
 const authService = require("../services/auth.service");
 const tokenService = require("../services/token.service");
+const userService = require("../services/user.service");
+
 const {
   registerValidation,
   loginValidation,
@@ -10,7 +12,7 @@ const register = async (req, res) => {
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
-  const emailExist = await authService.getUserByEmail(req.body.email);
+  const emailExist = await userService.getUserByEmail(req.body.email);
   if (emailExist) {
     return res.status(400).json({ error: "Email already exists" });
   }
@@ -27,7 +29,7 @@ const login = async (req, res) => {
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
-  const user = await authService.getUserByEmail(req.body.email);
+  const user = await userService.getUserByEmail(req.body.email);
   if (!user) {
     return res.status(400).json({ error: "Email is wrong" });
   }

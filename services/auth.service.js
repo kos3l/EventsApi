@@ -13,11 +13,6 @@ const login = async (id) => {
   return user;
 };
 
-const getUserByEmail = async (email) => {
-  const user = await User.findOne({ email: email });
-  return user;
-};
-
 module.exports = {
   register,
   login,
