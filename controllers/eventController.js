@@ -2,8 +2,9 @@ const eventService = require("../services/event.service");
 
 const createNewEvent = async (req, res) => {
   const data = req.body;
+  const userId = req.user.id;
   try {
-    const newEvent = await eventService.createNewEvent(data);
+    const newEvent = await eventService.createNewEvent(data, userId);
     res.send(newEvent);
   } catch (error) {
     res.status(500).send({ message: error.message });

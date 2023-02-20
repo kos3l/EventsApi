@@ -1,5 +1,22 @@
 const Event = require("../models/event");
 
+const createNewEvent = async (newEvent, userId) => {
+  let eventData = [
+    {
+      title: newEvent[0].title,
+      description: newEvent[0].description,
+      startDate: newEvent[0].startDate,
+      endDate: newEvent[0].endDate,
+      address: newEvent[0].address,
+      createdBy: userId,
+    },
+  ];
+  const createdEvent = await Event.insertMany(eventData).then((data) => {
+    return data;
+  });
+  return createdEvent;
+};
+
 const getAllEvents = async () => {
   const allEvents = await Event.find().then((data) => {
     return data;
@@ -12,13 +29,6 @@ const getEventById = async (id) => {
     return data;
   });
   return event;
-};
-
-const createNewEvent = async (newEvent) => {
-  const createdEvent = await Event.insertMany(newEvent).then((data) => {
-    return data;
-  });
-  return createdEvent;
 };
 
 const updateOneEvent = async (id, updatedEvent) => {

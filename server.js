@@ -11,7 +11,7 @@ const swaggerDefinition = yaml.load("./swagger.yaml");
 const swaggerUi = require("swagger-ui-express");
 
 // Import auth middleware
-// const { verifyToken } = require("./validations/auth.validation");
+const { verifyToken } = require("./validations/auth.validation");
 
 // Create express app
 const app = express();
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api/user", authRoutes);
-app.use("/api/event", eventRoutes);
+app.use("/api/event", verifyToken, eventRoutes);
 
 // Open mongoose connection
 mongoose

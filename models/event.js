@@ -2,13 +2,22 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-let eventSchema = new Schema({
-  name: { type: String },
-  description: { type: String },
-  startDate: { type: Date },
-  endDate: { type: Date },
-  address: { type: String },
-});
+let eventSchema = new Schema(
+  {
+    title: { type: String, require: true },
+    description: { type: String },
+    startDate: { type: Date, require: true },
+    endDate: { type: Date, require: true },
+    address: { type: String },
+    isArchived: { type: Boolean, require: true, default: false },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      require: true,
+    },
+  },
+  { timestamps: true }
+);
 
 eventSchema.pre("findOneAndUpdate", function () {
   const update = this.getUpdate();

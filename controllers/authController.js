@@ -13,10 +13,8 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const loggedInUser = await authService.login(req.body);
-    const token = await tokenService.generateToken(
-      loggedInUser.name,
-      loggedInUser._id
-    );
+    const username = loggedInUser.firstName + " " + loggedInUser.lastName;
+    const token = await tokenService.generateToken(username, loggedInUser._id);
 
     res.header("auth-token", token).json({
       error: null,
