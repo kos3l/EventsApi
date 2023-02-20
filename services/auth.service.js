@@ -13,13 +13,13 @@ const login = async (id) => {
   return user;
 };
 
-const isEmailTaken = async (email) => {
-  const foundEmail = await User.findOne({ email: email });
-  return foundEmail;
+const getUserByEmail = async (email) => {
+  const user = await User.findOne({ email: email });
+  return user;
 };
 
 module.exports = {
   register,
   login,
-  isEmailTaken,
+  getUserByEmail,
 };
