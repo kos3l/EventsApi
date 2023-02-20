@@ -4,8 +4,11 @@ const eventController = require("../controllers/eventController");
 // route: /api/event/
 router.post("/", eventController.createNewEvent);
 
-// route: /api/event/
-router.get("/", eventController.getAllEvents);
+// route: /api/event?isArchived=
+router.get("", eventController.getAllEvents);
+
+// route: /api/event/:date?datePrecision=
+router.get("/:date", eventController.getAllEventsByDate);
 
 // route: /api/event/:id
 router.get("/:id", eventController.getEventById);

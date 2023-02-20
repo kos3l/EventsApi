@@ -3,6 +3,10 @@ const eventService = require("../services/event.service");
 const createNewEvent = async (req, res) => {
   const data = req.body;
   const userId = req.user.id;
+  if (new Date(data[0].startDate) < new Date()) {
+    res.status(400).send({ message: "Events be created in the past" });
+    return;
+  }
   try {
     const newEvent = await eventService.createNewEvent(...data, userId);
     res.send(newEvent);
@@ -12,8 +16,29 @@ const createNewEvent = async (req, res) => {
 };
 
 const getAllEvents = async (req, res) => {
+  const userId = req.user.id;
+  const isArchived = req.query.isArchvied;
+
   try {
-    const allEvents = await eventService.getAllEvents();
+    const allEvents = await eventService.getAllEvents(userId, isArchived);
+    res.send(allEvents);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const getAllEventsByDate = async (req, res) => {
+  const userId = req.user.id;
+  const date = req.params.date;
+  // "day" || "month" || "year"
+  const datePrecision = req.query.datePrecision;
+
+  try {
+    const allEvents = await eventService.getAllEventsByDate(
+      userId,
+      date,
+      datePrecision
+    );
     res.send(allEvents);
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -67,6 +92,7 @@ const deleteOneEvent = async (req, res) => {
 module.exports = {
   createNewEvent,
   getAllEvents,
+  getAllEventsByDate,
   getEventById,
   updateOneEvent,
   deleteOneEvent,
