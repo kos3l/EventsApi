@@ -1,10 +1,9 @@
 require("dotenv-flow").config();
-
 // Import dependencies
-const express = require("express");
-const mongoose = require("mongoose");
-const yaml = require("yamljs");
-const bodyParser = require("body-parser");
+import express from "express";
+import mongoose from "mongoose";
+import yaml from "yamljs";
+import bodyParser from "body-parser";
 const eventRoutes = require("./routes/eventRoutes");
 const authRoutes = require("./routes/authRoutes");
 const swaggerDefinition = yaml.load("./swagger.yaml");
@@ -14,7 +13,7 @@ const swaggerUi = require("swagger-ui-express");
 const { verifyToken } = require("./validations/auth.validation");
 
 // Create express app
-const app = express();
+const app: express.Application = express();
 
 // Set up swagger
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
@@ -26,10 +25,7 @@ app.use("/api/event", verifyToken, eventRoutes);
 
 // Open mongoose connection
 mongoose
-  .connect(process.env.DBHOST, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
+  .connect(process.env.DBHOST!)
   .catch((error) => console.log("Error connecting to MongoDb: " + error));
 mongoose.connection.once("open", () =>
   console.log("Connected succesfully to MongoDb")
