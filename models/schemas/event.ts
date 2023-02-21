@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+import { IEvent } from "../interfaces/IEvent";
+import { Schema } from "mongoose";
+import { UpdateQuery } from "mongoose";
 
-const Schema = mongoose.Schema;
 // create a trigger or cron job to update is Archived
-let eventSchema = new Schema(
+let eventSchema = new Schema<IEvent>(
   {
     title: { type: String, required: true },
     description: { type: String },
@@ -19,8 +21,11 @@ let eventSchema = new Schema(
   { timestamps: true }
 );
 
-eventSchema.pre("findOneAndUpdate", function () {
+eventSchema.pre("findOneAndUpdate", function (this: UpdateQuery<IEvent>): void {
   const update = this.getUpdate();
+  if (!update) {
+    return;
+  }
   if (update.__v != null) {
     delete update.__v;
   }

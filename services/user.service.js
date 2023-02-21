@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/schemas/user.js");
 
 const createNewUser = async (user) => {
   const newUser = await User.create(user).then((data) => {

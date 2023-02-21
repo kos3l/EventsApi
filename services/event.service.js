@@ -1,4 +1,4 @@
-const Event = require("../models/event");
+const Event = require("../models/schemas/event.ts");
 const DateHelper = require("../utils/helpers/Date.helper");
 
 const createNewEvent = async (newEvent, userId) => {
