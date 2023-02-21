@@ -5,7 +5,6 @@ const {
 } = require("../validations/auth.validation");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-const user = require("../models/user");
 
 const register = async (userBody) => {
   const { error } = registerValidation(userBody);
