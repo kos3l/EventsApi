@@ -1,10 +1,10 @@
 const dayjs = require("dayjs");
 
 class DateHelper {
-  calculateStartOfPeriod(date, precision) {
+  static calculateStartOfPeriod(date, precision) {
     return dayjs(date).startOf(precision).toDate();
   }
-  calculateEndOfPeriod(date, precision) {
+  static calculateEndOfPeriod(date, precision) {
     return dayjs(date).endOf(precision).toDate();
   }
 }
