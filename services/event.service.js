@@ -1,5 +1,5 @@
 const Event = require("../models/event");
-const dayjs = require("dayjs");
+const DateHelper = require("../utils/helpers/Date.helper");
 
 const createNewEvent = async (newEvent, userId) => {
   let eventData = {
@@ -37,12 +37,12 @@ const getAllEventsByDate = async (userId, date, datePrecision) => {
     createdBy: userId,
     startDate: !datePrecision
       ? {
-          $gte: dayjs(date).startOf("month").toDate(),
-          $lte: dayjs(date).endOf("month").toDate(),
+          $gte: DateHelper.calculateStartOfPeriod(date, "month"),
+          $lte: DateHelper.calculateEndOfPeriod(date, "month"),
         }
       : {
-          $gte: dayjs(date).startOf(datePrecision).toDate(),
-          $lte: dayjs(date).endOf(datePrecision).toDate(),
+          $gte: DateHelper.calculateStartOfPeriod(date, datePrecision),
+          $lte: DateHelper.calculateEndOfPeriod(date, datePrecision),
         },
   };
 

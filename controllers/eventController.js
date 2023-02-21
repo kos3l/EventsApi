@@ -4,7 +4,7 @@ const createNewEvent = async (req, res) => {
   const data = req.body;
   const userId = req.user.id;
   if (new Date(data[0].startDate) < new Date()) {
-    res.status(400).send({ message: "Events be created in the past" });
+    res.status(400).send({ message: "Events can't be created in the past" });
     return;
   }
   try {
