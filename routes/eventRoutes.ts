@@ -19,4 +19,4 @@ router.put("/:id", eventController.updateOneEvent);
 // route: /api/event/:id
 router.delete("/:id", eventController.deleteOneEvent);
 
-module.exports = router;
+export = router;
