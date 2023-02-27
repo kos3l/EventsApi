@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
+import { IUser } from "../interfaces/IUser";
 const bcrypt = require("bcrypt");
+import { Schema } from "mongoose";
 
-const Schema = mongoose.Schema;
-
-let userSchema = new Schema(
+let userSchema = new Schema<IUser>(
   {
     firstName: {
       type: String,
@@ -49,13 +49,13 @@ userSchema.pre("save", async function (next) {
     user.password = await bcrypt.hash(user.password, salt);
 
     return next();
-  } catch (error) {
+  } catch (error: any) {
     return next(error);
   }
 });
 
 userSchema.method({
-  async comparePassword(password) {
+  async comparePassword(this: IUser, password: string): Promise<void> {
     return bcrypt.compare(password, this.password);
   },
 });
