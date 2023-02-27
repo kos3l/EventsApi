@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
-import { IUser } from "../interfaces/IUser";
-const bcrypt = require("bcrypt");
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
+import { UserModel } from "../types/UserModel";
+import { IUser, IUserMethods } from "../interfaces/IUser";
 
-let userSchema = new Schema<IUser>(
+const bcrypt = require("bcrypt");
+
+let userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     firstName: {
       type: String,
@@ -54,10 +55,11 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-userSchema.method({
-  async comparePassword(this: IUser, password: string): Promise<void> {
+userSchema.method(
+  "comparePassword",
+  async function comparePassword(this: IUser, password: string): Promise<void> {
     return bcrypt.compare(password, this.password);
-  },
-});
+  }
+);
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = model<IUser, UserModel>("user", userSchema);
