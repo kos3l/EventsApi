@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 import { UserModel } from "../types/UserModel";
-import { IUser, IUserMethods } from "../interfaces/IUser";
+import { IUser, IUserModel } from "../interfaces/IUser";
 
 const bcrypt = require("bcrypt");
 
-let userSchema = new Schema<IUser, UserModel, IUserMethods>(
+let userSchema = new Schema<IUser, UserModel, IUserModel>(
   {
     firstName: {
       type: String,
@@ -64,4 +64,4 @@ userSchema.method(
   }
 );
 
-module.exports = model<IUser, UserModel>("user", userSchema);
+module.exports = model<IUserModel>("user", userSchema);

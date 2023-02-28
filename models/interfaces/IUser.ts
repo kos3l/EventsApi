@@ -1,4 +1,5 @@
-export interface IUser {
+import { Document } from "mongoose";
+export interface IUser extends Document {
   _id: string;
   firstName: string;
   lastName: string;
@@ -7,6 +8,6 @@ export interface IUser {
   birthdate: Date;
 }
 
-export interface IUserMethods {
+export interface IUserModel extends IUser {
   comparePassword(password: string): Promise<string>;
 }
