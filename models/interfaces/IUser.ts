@@ -8,5 +8,5 @@ export interface IUser {
 }
 
 export interface IUserMethods {
-  comparePassword(): string;
+  comparePassword(password: string): Promise<string>;
 }

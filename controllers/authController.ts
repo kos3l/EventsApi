@@ -1,6 +1,7 @@
 const authService = require("../services/auth.service");
 const tokenService = require("../services/token.service");
 import { Request, Response } from "express";
+import { IUser } from "../models/interfaces/IUser";
 const register = async (req: Request, res: Response): Promise<Response> => {
   try {
     const savedUser = await authService.register(req.body);
@@ -10,11 +11,15 @@ const register = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
-const login = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response): Promise<Response> => {
   try {
     const loggedInUser = await authService.login(req.body);
-    const username = loggedInUser.firstName + " " + loggedInUser.lastName;
-    const token = await tokenService.generateToken(username, loggedInUser._id);
+    const username: string =
+      loggedInUser.firstName + " " + loggedInUser.lastName;
+    const token: string = await tokenService.generateToken(
+      username,
+      loggedInUser._id
+    );
 
     return res.header("auth-token", token).json({
       error: null,

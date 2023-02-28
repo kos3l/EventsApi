@@ -8,18 +8,18 @@ const httpStatus = require("http-status");
 import { IUser } from "../models/interfaces/IUser";
 import { ICreateUserDTO } from "../models/dto/ICreateUserDTO";
 import { ICreateLoginDTO } from "../models/dto/ICreateLoginDTO";
-import { UserModel } from "../models/types/UserModel";
 
-const register = async (userBody: ICreateUserDTO): Promise<UserModel> => {
+const register = async (userBody: ICreateUserDTO): Promise<IUser> => {
   const { error } = registerValidation(userBody);
   if (error) {
     throw new ApiError(httpStatus[400], error.details[0].message);
   }
-  const emailExist = await userService.getUserByEmail(userBody.email);
+
+  const emailExist: IUser = await userService.getUserByEmail(userBody.email);
   if (emailExist) {
     throw new ApiError(httpStatus[400], "Email already exists");
   }
-  const newUser = await userService.createNewUser(userBody);
+  const newUser: IUser = await userService.createNewUser(userBody);
   return newUser;
 };
 
@@ -28,7 +28,8 @@ const login = async (userBody: ICreateLoginDTO): Promise<IUser> => {
   if (error) {
     throw new ApiError(httpStatus[400], error.details[0].message);
   }
-  const fetchedUser = await userService.getUserByEmail(userBody.email);
+
+  const fetchedUser: IUser = await userService.getUserByEmail(userBody.email);
 
   if (!fetchedUser) {
     throw new ApiError(httpStatus[400], "Email is wrong");
