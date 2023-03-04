@@ -8,35 +8,35 @@ const httpStatus = require("http-status");
 import { ICreateUserDTO } from "../models/dto/ICreateUserDTO";
 import { ICreateLoginDTO } from "../models/dto/ICreateLoginDTO";
 import { HydratedDocument } from "mongoose";
-import { UserDocument } from "../models/documents/UserDocument";
-import { UserModel } from "../models/interfaces/UserModel";
+import { UserDocument, UserMethods } from "../models/documents/UserDocument";
 
 const register = async (
   userBody: ICreateUserDTO
-): Promise<HydratedDocument<UserDocument, UserModel> | null> => {
+): Promise<HydratedDocument<UserDocument, UserMethods> | null> => {
   const { error } = registerValidation(userBody);
   if (error) {
     throw new ApiError(httpStatus[400], error.details[0].message);
   }
 
-  const emailExist: HydratedDocument<UserDocument, UserModel> =
+  const emailExist: HydratedDocument<UserDocument, UserMethods> =
     await userService.getUserByEmail(userBody.email);
   if (emailExist) {
     throw new ApiError(httpStatus[400], "Email already exists");
   }
-  const newUser = await userService.createNewUser(userBody);
+  const newUser: HydratedDocument<UserDocument, UserMethods> =
+    await userService.createNewUser(userBody);
   return newUser;
 };
 
 const login = async (
   userBody: ICreateLoginDTO
-): Promise<HydratedDocument<UserDocument, UserModel> | null> => {
+): Promise<HydratedDocument<UserDocument, UserMethods> | null> => {
   const { error } = loginValidation(userBody);
   if (error) {
     throw new ApiError(httpStatus[400], error.details[0].message);
   }
 
-  const fetchedUser: HydratedDocument<UserDocument, UserModel> | null =
+  const fetchedUser: HydratedDocument<UserDocument, UserMethods> | null =
     await userService.getUserByEmail(userBody.email);
 
   if (!fetchedUser) {

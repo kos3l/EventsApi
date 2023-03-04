@@ -6,3 +6,7 @@ export interface UserDocument {
   password: string;
   birthdate: Date;
 }
+
+export interface UserMethods {
+  comparePassword(password: string): Promise<string>;
+}

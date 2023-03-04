@@ -1,33 +1,32 @@
 import { ICreateUserDTO } from "../models/dto/ICreateUserDTO";
 import { HydratedDocument } from "mongoose";
-import { UserDocument } from "../models/documents/UserDocument";
-import { UserTypeModel } from "../models/interfaces/typeModelUser";
+import { UserDocument, UserMethods } from "../models/documents/UserDocument";
 import { UserModel } from "../models/interfaces/UserModel";
 const User: HydratedDocument<
   UserDocument,
-  UserTypeModel
+  UserModel
 > = require("../models/schemas/user.ts");
 
 const createNewUser = async (
   user: ICreateUserDTO
-): Promise<HydratedDocument<UserDocument, UserModel> | null> => {
-  const newUser: HydratedDocument<UserDocument, UserModel> | null =
+): Promise<HydratedDocument<UserDocument, UserMethods> | null> => {
+  const newUser: HydratedDocument<UserDocument, UserMethods> | null =
     await User.create(user);
   return newUser;
 };
 
 const getUserById = async (
   id: string
-): Promise<HydratedDocument<UserDocument, UserModel> | null> => {
-  const user: HydratedDocument<UserDocument, UserModel> | null =
+): Promise<HydratedDocument<UserDocument, UserMethods> | null> => {
+  const user: HydratedDocument<UserDocument, UserMethods> | null =
     await User.findById(id);
   return user;
 };
 
 const getUserByEmail = async (
   email: string
-): Promise<HydratedDocument<UserDocument, UserModel> | null> => {
-  const user: HydratedDocument<UserDocument, UserModel> | null =
+): Promise<HydratedDocument<UserDocument, UserMethods> | null> => {
+  const user: HydratedDocument<UserDocument, UserMethods> | null =
     await User.findOne({
       email: email,
     });
