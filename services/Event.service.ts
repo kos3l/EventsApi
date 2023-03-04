@@ -47,15 +47,10 @@ const getAllEventsByDate = async (
 ): Promise<HydratedDocument<EventDocument>[]> => {
   let findArgs: IEventQueryParams = {
     createdBy: userId,
-    startDate: !datePrecision
-      ? {
-          $gte: DateHelper.calculateStartOfPeriod(date, "month"),
-          $lte: DateHelper.calculateEndOfPeriod(date, "month"),
-        }
-      : {
-          $gte: DateHelper.calculateStartOfPeriod(date, datePrecision),
-          $lte: DateHelper.calculateEndOfPeriod(date, datePrecision),
-        },
+    startDate: {
+      $gte: DateHelper.calculateStartOfPeriod(date, datePrecision),
+      $lte: DateHelper.calculateEndOfPeriod(date, datePrecision),
+    },
   };
 
   const allEvents: HydratedDocument<EventDocument>[] = await Event.find(

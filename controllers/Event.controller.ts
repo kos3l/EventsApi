@@ -3,6 +3,7 @@ import { Response } from "express";
 import { ExtendedRequest } from "../models/util/IExtendedRequest";
 import { HydratedDocument } from "mongoose";
 import { EventDocument } from "../models/documents/EventDocument";
+import { DatePrecision } from "../models/types/DatePrecision";
 const eventService = require("../services/Event.service");
 
 const createNewEvent = async (
@@ -41,7 +42,7 @@ const getAllEvents = async (req: ExtendedRequest, res: Response) => {
   }
 
   const userId: string = req.user;
-  const isArchived = req.query.isArchvied;
+  const isArchived: boolean = req.query.isArchived === "true";
 
   try {
     const allEvents: HydratedDocument<EventDocument>[] =
@@ -55,11 +56,26 @@ const getAllEvents = async (req: ExtendedRequest, res: Response) => {
 
 const getAllEventsByDate = async (req: ExtendedRequest, res: Response) => {
   if (!req.user) {
-    return res.status(500).send({ message: "Not Authorised!" });
+    return res.status(401).send({ message: "Not Authorised!" });
   }
   const userId: string = req.user;
-  const date = req.query.date;
-  const datePrecision = req.query.datePrecision;
+  let date: Date = new Date();
+
+  if (req.params.date) {
+    const dateObj: Date = new Date(req.params.date.toString());
+    date =
+      dateObj instanceof Date && !!dateObj.getDate() ? dateObj : new Date();
+  }
+  const precisionTypes = ["week", "month", "year"] as const;
+  type DatePrecision1 = typeof precisionTypes[number];
+  let datePrecision: DatePrecision1 = "year";
+  if (req.query.datePrecision) {
+    const stringDatePrecision: any = req.query.datePrecision.toString();
+    datePrecision =
+      precisionTypes.indexOf(stringDatePrecision) !== -1
+        ? stringDatePrecision
+        : "year";
+  }
 
   try {
     const allEvents: HydratedDocument<EventDocument>[] =
