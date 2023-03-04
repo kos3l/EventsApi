@@ -9,12 +9,11 @@ const DateHelper = require("../utils/helpers/Date.helper");
 const Event: HydratedDocument<
   EventDocument,
   Model<EventDocument>
-> = require("../models/schemas/user.ts");
+> = require("../models/schemas/EventSchema.ts");
 
 const createNewEvent = async (
   newEvent: ICreateEventDTO
 ): Promise<HydratedDocument<EventDocument>> => {
-  console.log("abcddaaaassssaaa");
   const createdEvent: HydratedDocument<EventDocument> = await Event.create(
     newEvent
   );

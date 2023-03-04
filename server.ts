@@ -4,14 +4,13 @@ import express from "express";
 import mongoose from "mongoose";
 import yaml from "yamljs";
 import bodyParser from "body-parser";
-const eventRoutes = require("./routes/eventRoutes");
-const authRoutes = require("./routes/authRoutes");
+const eventRoutes = require("./routes/EventRoutes");
+const authRoutes = require("./routes/AuthRoutes");
 const swaggerDefinition = yaml.load("./swagger.yaml");
 const swaggerUi = require("swagger-ui-express");
 
 // Import auth middleware
-const { verifyToken } = require("./validations/auth.validation");
-
+import { verifyToken } from "./middleware/Token.middleware";
 // Create express app
 const app: express.Application = express();
 
