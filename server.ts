@@ -4,8 +4,8 @@ import express from "express";
 import mongoose from "mongoose";
 import yaml from "yamljs";
 import bodyParser from "body-parser";
-const eventRoutes = require("./routes/EventRoutes");
-const authRoutes = require("./routes/AuthRoutes");
+const eventRoutes = require("./routes/Event.routes");
+const authRoutes = require("./routes/Auth.routes");
 const swaggerDefinition = yaml.load("./swagger.yaml");
 const swaggerUi = require("swagger-ui-express");
 

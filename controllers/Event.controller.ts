@@ -39,6 +39,7 @@ const getAllEvents = async (req: ExtendedRequest, res: Response) => {
   if (!req.user) {
     return res.status(500).send({ message: "Not Authorised!" });
   }
+
   const userId: string = req.user;
   const isArchived = req.query.isArchvied;
 
@@ -57,7 +58,7 @@ const getAllEventsByDate = async (req: ExtendedRequest, res: Response) => {
     return res.status(500).send({ message: "Not Authorised!" });
   }
   const userId: string = req.user;
-  const date: string = req.params.date;
+  const date = req.query.date;
   const datePrecision = req.query.datePrecision;
 
   try {
@@ -80,7 +81,7 @@ const getEventById = async (req: ExtendedRequest, res: Response) => {
 };
 
 const updateOneEvent = async (req: ExtendedRequest, res: Response) => {
-  const id = req.query.id;
+  const id = req.params.id;
 
   try {
     const updatedEvent: HydratedDocument<EventDocument> =
