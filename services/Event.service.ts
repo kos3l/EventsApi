@@ -14,7 +14,7 @@ const Event: HydratedDocument<
 const createNewEvent = async (
   newEvent: ICreateEventDTO
 ): Promise<HydratedDocument<EventDocument>> => {
-  console.log("a");
+  console.log("ab");
   const createdEvent: HydratedDocument<EventDocument> = await Event.create(
     newEvent
   );
