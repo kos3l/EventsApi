@@ -1,7 +1,6 @@
 const authService = require("../services/auth.service");
 const tokenService = require("../services/token.service");
 import { Request, Response } from "express";
-import { IUser } from "../models/interfaces/IUser";
 const register = async (req: Request, res: Response): Promise<Response> => {
   try {
     const savedUser = await authService.register(req.body);

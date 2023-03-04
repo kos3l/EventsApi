@@ -1,30 +1,28 @@
-const User = require("../models/schemas/user.ts");
+import { UserDocument } from "../models/documents/UserDocument";
+import { UserModel } from "../models/interfaces/UserModel";
+const User: UserModel = require("../models/schemas/user.ts");
 import { ICreateUserDTO } from "../models/dto/ICreateUserDTO";
-import { IUserModel } from "../models/interfaces/IUser";
 
-const createNewUser = async (user: ICreateUserDTO): Promise<IUserModel> => {
-  const newUser: Promise<IUserModel> = await User.create(user).then(
-    (data: IUserModel) => {
+const createNewUser = async (user: ICreateUserDTO): Promise<UserDocument> => {
+  const newUser: UserDocument = await User.create(user).then(
+    (data: UserDocument) => {
       return data;
     }
   );
   return newUser;
 };
 
-const getUserById = async (id: string): Promise<IUserModel> => {
-  const user: Promise<IUserModel> = await User.findById(id).then(
-    (data: IUserModel) => {
-      return data;
-    }
-  );
-
+const getUserById = async (id: string): Promise<UserModel | null> => {
+  const user: UserModel | null = await User.findById(id);
+  debugger;
   return user;
 };
 
-const getUserByEmail = async (email: string): Promise<IUserModel> => {
-  const user: Promise<IUserModel> = await User.findOne({
+const getUserByEmail = async (email: string): Promise<UserModel | null> => {
+  const user: UserModel | null = await User.findOne({
     email: email,
   });
+
   return user;
 };
 

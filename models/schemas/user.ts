@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
-import { UserModel } from "../types/UserModel";
-import { IUser, IUserModel } from "../interfaces/IUser";
+import { UserDocument } from "../documents/UserDocument";
+import { UserModel } from "../interfaces/UserModel";
 
 const bcrypt = require("bcrypt");
 
-let userSchema = new Schema<IUser, UserModel, IUserModel>(
+let userSchema = new Schema<UserDocument>(
   {
     firstName: {
       type: String,
@@ -55,13 +55,8 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-userSchema.method(
-  "comparePassword",
+userSchema.method("comparePassword", async function (password: string) {
+  return bcrypt.compare(password, this.password);
+});
 
-  async function (password: string) {
-    console.log(this);
-    return bcrypt.compare(password, this.password);
-  }
-);
-
-module.exports = model<IUserModel>("user", userSchema);
+module.exports = model<UserDocument, UserModel>("user", userSchema);
