@@ -1,4 +1,4 @@
-import { IApiError } from "../models/interfaces/IApiError";
+import { IApiError } from "../models/util/IApiError";
 
 class ApiError implements IApiError {
   // probably should extend error class look into this

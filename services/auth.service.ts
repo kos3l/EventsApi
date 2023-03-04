@@ -5,8 +5,8 @@ const {
 } = require("../validations/auth.validation");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-import { ICreateUserDTO } from "../models/dto/ICreateUserDTO";
-import { ICreateLoginDTO } from "../models/dto/ICreateLoginDTO";
+import { ICreateUserDTO } from "../models/dto/user/ICreateUserDTO";
+import { ICreateLoginDTO } from "../models/dto/user/ICreateLoginDTO";
 import { HydratedDocument } from "mongoose";
 import { UserDocument, UserMethods } from "../models/documents/UserDocument";
 

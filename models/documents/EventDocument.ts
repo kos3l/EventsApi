@@ -1,4 +1,4 @@
-export interface IEvent {
+export interface EventDocument {
   title: string;
   description: string;
   startDate: Date;

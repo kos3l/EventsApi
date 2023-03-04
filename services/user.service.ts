@@ -1,11 +1,11 @@
-import { ICreateUserDTO } from "../models/dto/ICreateUserDTO";
-import { HydratedDocument } from "mongoose";
+import { ICreateUserDTO } from "../models/dto/user/ICreateUserDTO";
+import mongoose, { HydratedDocument } from "mongoose";
 import { UserDocument, UserMethods } from "../models/documents/UserDocument";
-import { UserModel } from "../models/interfaces/UserModel";
+import { UserModel } from "../models/types/UserModel";
 const User: HydratedDocument<
   UserDocument,
   UserModel
-> = require("../models/schemas/user.ts");
+> = require("../models/schemas/UserSchema.ts");
 
 const createNewUser = async (
   user: ICreateUserDTO
@@ -16,7 +16,7 @@ const createNewUser = async (
 };
 
 const getUserById = async (
-  id: string
+  id: mongoose.Types.ObjectId
 ): Promise<HydratedDocument<UserDocument, UserMethods> | null> => {
   const user: HydratedDocument<UserDocument, UserMethods> | null =
     await User.findById(id);

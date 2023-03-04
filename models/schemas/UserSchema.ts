@@ -1,6 +1,6 @@
 import { Schema, model, Model } from "mongoose";
 import { UserDocument, UserMethods } from "../documents/UserDocument";
-import { UserModel } from "../interfaces/UserModel";
+import { UserModel } from "../types/UserModel";
 
 const bcrypt = require("bcrypt");
 
