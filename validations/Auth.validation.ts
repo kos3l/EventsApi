@@ -1,9 +1,9 @@
-import { ICreateEventDTO } from "../models/dto/event/ICreateEventDTO";
-import { IUpdateEventDTO } from "../models/dto/event/IUpdateEventDTO";
+import { ICreateLoginDTO } from "../models/dto/user/ICreateLoginDTO";
+import { ICreateUserDTO } from "../models/dto/user/ICreateUserDTO";
 
 const Joi = require("joi");
 
-const registerValidation = (data: ICreateEventDTO) => {
+const registerValidation = (data: ICreateUserDTO) => {
   const schema = Joi.object({
     firstName: Joi.string().min(3).max(255).required(),
     lastName: Joi.string().min(3).max(255).required(),
@@ -14,7 +14,7 @@ const registerValidation = (data: ICreateEventDTO) => {
   return schema.validate(data);
 };
 
-const loginValidation = (data: IUpdateEventDTO) => {
+const loginValidation = (data: ICreateLoginDTO) => {
   const schema = Joi.object({
     email: Joi.string().min(6).max(255).required(),
     password: Joi.string().min(6).max(255).required(),
