@@ -6,6 +6,8 @@ import { EventDocument } from "../models/documents/EventDocument";
 import { DatePrecision } from "../models/types/DatePrecision";
 import { DateHelper } from "../utils/helpers/Date.helper";
 import { PrecisionHelper } from "../utils/helpers/Precision.helper";
+import { IUpdateEventDTO } from "../models/dto/event/IUpdateEventDTO";
+import { UpdateResult } from "mongodb";
 const eventService = require("../services/Event.service");
 
 const createNewEvent = async (
@@ -13,25 +15,22 @@ const createNewEvent = async (
   res: Response
 ): Promise<Response> => {
   const data = req.body;
+  const eventDto: ICreateEventDTO = data[0];
 
   if (!req.user) {
     return res.status(500).send({ message: "Not Authorised!" });
   }
   const userId = req.user;
 
-  let eventData: ICreateEventDTO = {
-    ...data[0],
-    createdBy: userId,
-  };
-
-  if (new Date(data[0].startDate) < new Date()) {
+  if (new Date(eventDto.startDate) < new Date()) {
     return res
       .status(400)
       .send({ message: "Events can't be created in the past" });
   }
+
   try {
     const newEvent: HydratedDocument<EventDocument> =
-      await eventService.createNewEvent(eventData);
+      await eventService.createNewEvent(userId, eventDto);
     return res.send(newEvent);
   } catch (error: any) {
     return res.status(500).send({ message: error.message });
@@ -117,10 +116,11 @@ const getEventById = async (req: ExtendedRequest, res: Response) => {
 
 const updateOneEvent = async (req: ExtendedRequest, res: Response) => {
   const id: string = req.params.id;
+  const data: IUpdateEventDTO = req.body;
 
   try {
     const updatedEvent: HydratedDocument<EventDocument> =
-      await eventService.updateOneEvent(id, req.body);
+      await eventService.updateOneEvent(id, data);
 
     if (!updatedEvent) {
       return res.status(404).send({
@@ -128,6 +128,22 @@ const updateOneEvent = async (req: ExtendedRequest, res: Response) => {
       });
     } else {
       return res.send({ message: "Event was succesfully updated." });
+    }
+  } catch (err: any) {
+    return res.status(500).send({ message: err.message });
+  }
+};
+
+const archiveEvents = async (req: ExtendedRequest, res: Response) => {
+  try {
+    const archivedEvents: UpdateResult = await eventService.archiveEvents();
+
+    if (!archivedEvents) {
+      return res.status(404).send({
+        message: "No events found",
+      });
+    } else {
+      return res.status(204).send();
     }
   } catch (err: any) {
     return res.status(500).send({ message: err.message });
@@ -160,5 +176,6 @@ module.exports = {
   getAllEventsByDate,
   getEventById,
   updateOneEvent,
+  archiveEvents,
   deleteOneEvent,
 };

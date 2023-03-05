@@ -27,7 +27,7 @@ mongoose
   .connect(process.env.DBHOST!)
   .catch((error) => console.log("Error connecting to MongoDb: " + error));
 mongoose.connection.once("open", () =>
-  console.log("Connected succesfully to MongoDb")
+  console.log("Connected succesfully to MongoDb!")
 );
 
 // Set the port
