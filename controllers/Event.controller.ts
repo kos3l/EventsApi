@@ -13,25 +13,22 @@ const createNewEvent = async (
   res: Response
 ): Promise<Response> => {
   const data = req.body;
+  const eventDto: ICreateEventDTO = data[0];
 
   if (!req.user) {
     return res.status(500).send({ message: "Not Authorised!" });
   }
   const userId = req.user;
 
-  let eventData: ICreateEventDTO = {
-    ...data[0],
-    createdBy: userId,
-  };
-
-  if (new Date(data[0].startDate) < new Date()) {
+  if (new Date(eventDto.startDate) < new Date()) {
     return res
       .status(400)
       .send({ message: "Events can't be created in the past" });
   }
+
   try {
     const newEvent: HydratedDocument<EventDocument> =
-      await eventService.createNewEvent(eventData);
+      await eventService.createNewEvent(userId, eventDto);
     return res.send(newEvent);
   } catch (error: any) {
     return res.status(500).send({ message: error.message });

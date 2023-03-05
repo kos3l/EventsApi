@@ -8,7 +8,7 @@ router.post("/", eventController.createNewEvent);
 // route: /api/event/:id
 router.get("/:id", eventController.getEventById);
 
-// route: /api/event/:date?datePrecision=
+// route: /api/event/date/:date?datePrecision=
 router.get("/date/:date", eventController.getAllEventsByDate);
 
 // route: /api/event?isArchived=
