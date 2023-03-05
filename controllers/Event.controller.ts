@@ -6,6 +6,7 @@ import { EventDocument } from "../models/documents/EventDocument";
 import { DatePrecision } from "../models/types/DatePrecision";
 import { DateHelper } from "../utils/helpers/Date.helper";
 import { PrecisionHelper } from "../utils/helpers/Precision.helper";
+import { IUpdateEventDTO } from "../models/dto/event/IUpdateEventDTO";
 const eventService = require("../services/Event.service");
 
 const createNewEvent = async (
@@ -114,10 +115,11 @@ const getEventById = async (req: ExtendedRequest, res: Response) => {
 
 const updateOneEvent = async (req: ExtendedRequest, res: Response) => {
   const id: string = req.params.id;
+  const data: IUpdateEventDTO = req.body;
 
   try {
     const updatedEvent: HydratedDocument<EventDocument> =
-      await eventService.updateOneEvent(id, req.body);
+      await eventService.updateOneEvent(id, data);
 
     if (!updatedEvent) {
       return res.status(404).send({

@@ -120,8 +120,6 @@ components:
     IUpdateEventDTO:
       type: object
       properties:
-        _id:
-          type: string
         title:
           type: string
         description:
@@ -147,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/ICreateUserDTO"
 
       responses:
         201:
@@ -225,7 +223,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ICreateEventDTO"
+              items:
+                $ref: "#/components/schemas/ICreateEventDTO"
 
       responses:
         201:
@@ -267,7 +266,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Event"
 
-  /events/{id}:
+  /event/{id}:
     get:
       summary: Specific Event
       description: Retrieves a specific Event based on it id.
