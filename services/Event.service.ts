@@ -4,8 +4,7 @@ import { ICreateEventDTO } from "../models/dto/event/ICreateEventDTO";
 import { IUpdateEventDTO } from "../models/dto/event/IUpdateEventDTO";
 import { DatePrecision } from "../models/types/DatePrecision";
 import { IEventQueryParams } from "../models/util/IEventQueryParams";
-
-const DateHelper = require("../utils/helpers/Date.helper");
+import { DateHelper } from "../utils/helpers/Date.helper";
 const Event: HydratedDocument<
   EventDocument,
   Model<EventDocument>

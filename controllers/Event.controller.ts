@@ -4,6 +4,8 @@ import { ExtendedRequest } from "../models/util/IExtendedRequest";
 import { HydratedDocument } from "mongoose";
 import { EventDocument } from "../models/documents/EventDocument";
 import { DatePrecision } from "../models/types/DatePrecision";
+import { DateHelper } from "../utils/helpers/Date.helper";
+import { PrecisionHelper } from "../utils/helpers/Precision.helper";
 const eventService = require("../services/Event.service");
 
 const createNewEvent = async (
@@ -40,9 +42,12 @@ const getAllEvents = async (req: ExtendedRequest, res: Response) => {
   if (!req.user) {
     return res.status(500).send({ message: "Not Authorised!" });
   }
-
   const userId: string = req.user;
-  const isArchived: boolean = req.query.isArchived === "true";
+
+  let isArchived: boolean | null = null;
+  if (req.query.isArchived) {
+    isArchived = req.query.isArchived === "true";
+  }
 
   try {
     const allEvents: HydratedDocument<EventDocument>[] =
@@ -59,22 +64,36 @@ const getAllEventsByDate = async (req: ExtendedRequest, res: Response) => {
     return res.status(401).send({ message: "Not Authorised!" });
   }
   const userId: string = req.user;
-  let date: Date = new Date();
 
-  if (req.params.date) {
-    const dateObj: Date = new Date(req.params.date.toString());
-    date =
-      dateObj instanceof Date && !!dateObj.getDate() ? dateObj : new Date();
+  if (
+    req.params.date == "null" ||
+    req.params.date == "undefined" ||
+    !req.params.date
+  ) {
+    return res.status(400).send({ message: "Date parameter is missing!" });
   }
-  const precisionTypes = ["week", "month", "year"] as const;
-  type DatePrecision1 = typeof precisionTypes[number];
-  let datePrecision: DatePrecision1 = "year";
-  if (req.query.datePrecision) {
+
+  let date: Date = new Date();
+  const dateObj: Date = new Date(req.params.date.toString());
+
+  // checks if the date is a valid Date js object, if not use the current date
+  if (DateHelper.checkIfValidDateObject(dateObj)) {
+    date = dateObj;
+  } else {
+    return res.status(400).send({ message: "Invalid Date parameter!" });
+  }
+
+  let datePrecision: DatePrecision = "year";
+  // checking if the query parameter of datePrecision is one of the DatePrecision type variants, if not default to year
+  if (
+    req.params.datePrecision !== "null" &&
+    req.params.datePrecision !== "undefined" &&
+    req.query.datePrecision
+  ) {
     const stringDatePrecision: any = req.query.datePrecision.toString();
     datePrecision =
-      precisionTypes.indexOf(stringDatePrecision) !== -1
-        ? stringDatePrecision
-        : "year";
+      PrecisionHelper.checkIfValueIsOfTypeDatePrecision(stringDatePrecision) &&
+      stringDatePrecision;
   }
 
   try {
@@ -97,7 +116,7 @@ const getEventById = async (req: ExtendedRequest, res: Response) => {
 };
 
 const updateOneEvent = async (req: ExtendedRequest, res: Response) => {
-  const id = req.params.id;
+  const id: string = req.params.id;
 
   try {
     const updatedEvent: HydratedDocument<EventDocument> =
