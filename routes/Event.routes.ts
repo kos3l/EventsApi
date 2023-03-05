@@ -8,11 +8,16 @@ router.post("/", eventController.createNewEvent);
 // route: /api/event/:id
 router.get("/:id", eventController.getEventById);
 
-// route: /api/event/:date?datePrecision=
+// route: /api/event/date/:date?datePrecision=
 router.get("/date/:date", eventController.getAllEventsByDate);
 
 // route: /api/event?isArchived=
 router.get("/", eventController.getAllEvents);
+
+// route: /api/event/archive
+// needs to be run daily to update archived values on events
+// node-cron will be used for this in the future update
+router.put("/archive", eventController.archiveEvents);
 
 // route: /api/event/:id
 router.put("/:id", eventController.updateOneEvent);
