@@ -14,6 +14,9 @@ router.get("/date/:date", eventController.getAllEventsByDate);
 // route: /api/event?isArchived=
 router.get("/", eventController.getAllEvents);
 
+// route: /api/event/archive
+router.put("/archive", eventController.archiveEvents);
+
 // route: /api/event/:id
 router.put("/:id", eventController.updateOneEvent);
 

@@ -7,6 +7,7 @@ import { DatePrecision } from "../models/types/DatePrecision";
 import { DateHelper } from "../utils/helpers/Date.helper";
 import { PrecisionHelper } from "../utils/helpers/Precision.helper";
 import { IUpdateEventDTO } from "../models/dto/event/IUpdateEventDTO";
+import { UpdateResult } from "mongodb";
 const eventService = require("../services/Event.service");
 
 const createNewEvent = async (
@@ -133,6 +134,22 @@ const updateOneEvent = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
+const archiveEvents = async (req: ExtendedRequest, res: Response) => {
+  try {
+    const archivedEvents: UpdateResult = await eventService.archiveEvents();
+
+    if (!archivedEvents) {
+      return res.status(404).send({
+        message: "No events found",
+      });
+    } else {
+      return res.status(200).send();
+    }
+  } catch (err: any) {
+    return res.status(500).send({ message: err.message });
+  }
+};
+
 const deleteOneEvent = async (req: ExtendedRequest, res: Response) => {
   const id: string = req.params.id;
 
@@ -159,5 +176,6 @@ module.exports = {
   getAllEventsByDate,
   getEventById,
   updateOneEvent,
+  archiveEvents,
   deleteOneEvent,
 };

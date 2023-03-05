@@ -1,3 +1,4 @@
+import { UpdateResult } from "mongodb";
 import mongoose, { HydratedDocument, Model } from "mongoose";
 import { EventDocument } from "../models/documents/EventDocument";
 import { ICreateEventDTO } from "../models/dto/event/ICreateEventDTO";
@@ -81,6 +82,14 @@ const updateOneEvent = async (
   return event;
 };
 
+const archiveEvents = async (): Promise<UpdateResult> => {
+  const events: UpdateResult = await Event.updateMany(
+    { startDate: { $lt: new Date() } },
+    { isArchived: true }
+  );
+  return events;
+};
+
 const deleteOneEvent = async (
   id: mongoose.Types.ObjectId
 ): Promise<HydratedDocument<EventDocument> | null> => {
@@ -95,5 +104,6 @@ module.exports = {
   getEventById,
   createNewEvent,
   updateOneEvent,
+  archiveEvents,
   deleteOneEvent,
 };
