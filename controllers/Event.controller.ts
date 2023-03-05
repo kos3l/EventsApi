@@ -143,7 +143,7 @@ const archiveEvents = async (req: ExtendedRequest, res: Response) => {
         message: "No events found",
       });
     } else {
-      return res.status(200).send();
+      return res.status(204).send();
     }
   } catch (err: any) {
     return res.status(500).send({ message: err.message });

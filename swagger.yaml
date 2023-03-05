@@ -342,3 +342,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Event"
+
+  /event/archive:
+    put:
+      summary: Archives events that are in the past
+      description: Should be run daily at midnight to archive all old events
+      tags:
+        - event
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        204:
+          description: The resources were successfully updated.

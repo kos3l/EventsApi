@@ -15,6 +15,8 @@ router.get("/date/:date", eventController.getAllEventsByDate);
 router.get("/", eventController.getAllEvents);
 
 // route: /api/event/archive
+// needs to be run daily to update archived values on events
+// node-cron will be used for this in the future update
 router.put("/archive", eventController.archiveEvents);
 
 // route: /api/event/:id
